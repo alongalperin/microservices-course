@@ -10,7 +10,7 @@ export default ({ postId }) => {
     );
 
     setComments(result.data);
-  }, [setComments]);
+  }, [setComments, postId]);
 
   useEffect(() => {
     fetchComments();
