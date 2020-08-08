@@ -85160,7 +85160,7 @@ function () {
   }
 
   Company.prototype.markerContent = function () {
-    return "\n      <div style=\"background-color: red\">\n        <h1>Comapny Name: " + this.companyName + "</h1>\n        </h3>Catchphrase: " + this.catchPhrase + "</h3>\n      </div>\n    ";
+    return "\n      <div style=\"background-color: " + this.color + "\">\n        <h1>Comapny Name: " + this.companyName + "</h1>\n        </h3>Catchphrase: " + this.catchPhrase + "</h3>\n      </div>\n    ";
   };
 
   return Company;

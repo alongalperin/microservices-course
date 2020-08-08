@@ -21,7 +21,7 @@ export class Company implements Mappable {
 
   markerContent(): string {
     return `
-      <div style="background-color: red">
+      <div style="background-color: ${this.color}">
         <h1>Comapny Name: ${this.companyName}</h1>
         </h3>Catchphrase: ${this.catchPhrase}</h3>
       </div>
