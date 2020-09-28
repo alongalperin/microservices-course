@@ -32,6 +32,8 @@ router.post('/api/tickets', requireAuth, [
         userId: ticket.userId
     });
 
+    console.log('creating new ticket');
+
     res.status(201).send(ticket);
 });
 
