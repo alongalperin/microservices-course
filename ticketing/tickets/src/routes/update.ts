@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validateRequest, NotFoundError, requireAuth, NotAuthorizedError } from '@alontickets/common';
+import { validateRequest, NotFoundError, requireAuth, NotAuthorizedError, BadRequestError } from '@alontickets/common';
 import { Ticket } from '../models/ticket';
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -27,6 +27,10 @@ router.put('/api/tickets/:id',
             throw new NotFoundError();
         }
 
+        if (ticket.orderId) {
+            throw new BadRequestError("Cannot edit a reserved ticket");
+        }
+
         if (ticket.userId !== req.currentUser!.id) {
             throw new NotAuthorizedError();
         }
@@ -39,6 +43,7 @@ router.put('/api/tickets/:id',
 
         new TicketUpdatedPublisher(natsWrapper.client).publish({
             id: ticket.id,
+            version: ticket.version,
             title: ticket.title,
             price: ticket.price,
             userId: ticket.userId
