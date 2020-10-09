@@ -1,23 +1,28 @@
+import { useState } from 'react';
 import Link from 'next/link';
 
-const LandingPage = ({ currentUser, tickets }) => {
-  const ticketList = tickets.map(ticket => {
-    return (
-      <tr key={ticket.id}>
-        <td>{ticket.title}</td>
-        <td>{ticket.price}</td>
-        <td>
-          <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-            <a href="#">View</a>
-          </Link>
-        </td>
-      </tr>
-    )
-  })
+const LandingPage = ({ currentUser, tickets, error }) => {
+  let ticketList = [];
+  if (tickets) {
+    ticketList = tickets.map(ticket => {
+      return (        
+        <tr key={ticket.id}>
+          <td>{ticket.title}</td>
+          <td>{ticket.price}</td>
+          <td>
+            <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+              <a href="#">View</a>
+            </Link>
+          </td>
+        </tr>
+      )
+    })
+  }
 
   return (
     <div>
       <h1>Tickets</h1>
+      { error && <p>{error}</p>}
       <table className="table">
         <thead>
           <tr>
@@ -35,9 +40,13 @@ const LandingPage = ({ currentUser, tickets }) => {
 };
 
 LandingPage.getInitialProps = async (context, client, currentUser) => {
-  const { data } = await client.get('/api/tickets');
-  
-  return { tickets: data};
+  let error = '';
+  try {
+    const { data } = await client.get('/api/tickets');
+    return { tickets: data, error: null};
+  } catch (err) {
+    return { tickets: null, error: 'Error while fetching tickets'};
+  }
 };
 
 export default LandingPage;
