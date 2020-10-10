@@ -21,7 +21,7 @@ const LandingPage = ({ currentUser, tickets, error }) => {
 
   return (
     <div>
-      <h1>Tickets</h1>
+      <h2>Tickets</h2>
       { error && <p>{error}</p>}
       <table className="table">
         <thead>
